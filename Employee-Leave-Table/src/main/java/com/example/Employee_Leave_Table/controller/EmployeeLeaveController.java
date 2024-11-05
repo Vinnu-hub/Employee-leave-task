@@ -14,7 +14,7 @@ public class EmployeeLeaveController {
     private EmployeeLeaveService employeeLeaveService;
 
     // Get leave summary for an employee by ID
-    @GetMapping("/employee/{empId}/leave-summary")
+    @GetMapping("/employee/leave-summary/{empId}")
     public EmployeeSummaryDTO getLeaveSummary(@PathVariable Long empId) {
         return employeeLeaveService.getLeaveSummary(empId);
     }

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface EmpLeaveRepository extends JpaRepository<EmpLeave, Long> {
-    // You can define custom queries if needed. For example, to get EmpLeave records for an employee:
+
     List<EmpLeave> findByEmployeeEmpId(Long empId);
 }

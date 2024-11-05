@@ -1,5 +1,6 @@
 package com.example.Employee_Leave_Table.service;
 
+import com.example.Employee_Leave_Table.Exception.EmployeeNotFoundException;
 import com.example.Employee_Leave_Table.dto.EmployeeSummaryDTO;
 import com.example.Employee_Leave_Table.dto.LeaveSummaryDTO;
 import com.example.Employee_Leave_Table.entity.EmpLeave;
@@ -30,25 +31,27 @@ public class EmployeeLeaveService {
 
     // Get leave summary by employeeId
     public EmployeeSummaryDTO getLeaveSummary(Long empId) {
-        // Fetch the employee from the database
         Optional<Employee> employeeOpt = employeeRepository.findById(empId);
         if (!employeeOpt.isPresent()) {
-            throw new RuntimeException("Employee not found with id: " + empId);
+            // Throw custom exception if employee not found
+            throw new EmployeeNotFoundException("Employee not found with id: " + empId);
         }
         Employee employee = employeeOpt.get();
-
         // For now, set total leaves eligible to a fixed value (can be dynamic based on your system)
         int totalLeavesEligible = 20;
 
-        // Initialize the variables for calculating leaves
+        // Initialize the variables for calculating leaves as a empty map
         Map<String, Integer> leavesTakenMap = new HashMap<>();
+
         int totalLeavesTaken = 0;
 
         // Fetch all the EmpLeave records for the employee
+        //filter is happend here and we are iterating that data here next code
         List<EmpLeave> empLeaves = empLeaveRepository.findByEmployeeEmpId(empId);
 
         // Iterate over each EmpLeave record
-        for (EmpLeave empLeave : empLeaves) {
+        for (EmpLeave empLeave : empLeaves)
+        {
             Leave leave = empLeave.getLeave();
             String leaveType = leave.getLeaveType();  // Get the leave type (e.g., Sick, Casual)
 
